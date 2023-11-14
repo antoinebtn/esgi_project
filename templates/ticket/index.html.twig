@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ESGI Project - Tous les tickets{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Titre</th>
+            <th scope="col">Affectation</th>
+            <th scope="col">Type</th>
+            <th scope="col">Statut</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ticket in tickets %}
+        <tr>
+            <th scope="row">{{ ticket.id }}</th>
+            <td>{{ ticket.title }}</td>
+            <td>{{ ticket.assignment }}</td>
+            <td>A faire</td>
+            <td>A faire</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

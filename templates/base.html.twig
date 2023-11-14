@@ -14,21 +14,69 @@
     <body>
         <div class="container">
             <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-                <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                <a href="{{ path('app_home') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                     <span class="fs-4">ESGI Project</span>
                 </a>
-
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Nouveau ticket</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Mes Tickets</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Mes Projets</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Connexion</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Inscription</a></li>
+                    {% if app.user %}
+                        <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Nouveau ticket</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">Mes Tickets</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">Mes Projets</a></li>
+                        <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link">Déconnexion</a></li>
+                    {% else %}
+                        <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link">Connexion</a></li>
+                        <li class="nav-item"><a href="{{ path('app_register') }}" class="nav-link">Inscription</a></li>
+                    {% endif %}
+
                 </ul>
             </header>
         </div>
-        {% block body %}
-        {% endblock %}
+        <div class="row">
+            <div class="col-3">
+                <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+                    <hr>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="{{ path('app_home') }}" class="nav-link active" aria-current="page">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+                                Accueil
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link link-dark">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+                                Tableau de bord
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link link-dark">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+                                Versions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_ticket') }}" class="nav-link link-dark">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+                                Tous les Tickets
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link link-dark">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+                                Tous les Projets
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+                </div>
+            </div>
+            <div class="col-6">
+                {% block body %}
+                {% endblock %}
+            </div>
+            <div class="col-3"></div>
+        </div>
+
         <div class="container">
             <footer class="py-3 my-4">
                 <ul class="nav justify-content-center border-bottom pb-3 mb-3">
