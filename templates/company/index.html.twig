@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ESGI Project - Mon Entreprise{% endblock %}
+
+{% block body %}
+    <h1>{{ company.name }}</h1>
+    <hr>
+    <h3>Abonnement : <strong>{{ company.subscription }}</strong></h3>
+    <p><a href="">Modifier mon Abonnement</a></p>
+    <hr>
+    <h2>Projets :</h2>
+    <ul>
+        {% for project in projects %}
+            <li><a href="{{ path('app_show_project',{id: project.id}) }}"></a>{{ project.name }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

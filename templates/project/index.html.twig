@@ -14,7 +14,7 @@
         {% for project in projects %}
             <tr>
                 <th scope="row">{{ project.id }}</th>
-                <td><a href="">{{ project.name }}</a></td>
+                <td><a href="{{ path('app_show_project',{id: project.id}) }}">{{ project.name }}</a></td>
             </tr>
         {% endfor %}
         </tbody>

@@ -3,6 +3,14 @@
 {% block title %}ESGI Project - Ticket n°{{ ticket.id }}{% endblock %}
 
 {% block body %}
-<h1>{{ ticket.title }}</h1>
-<p>{{ ticket.content }}</p>
+    <div class="card" >
+        <div class="card-body">
+            <h5 class="card-title">{{ ticket.title }}</h5>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">Statut : {{ ticket.status }} | Type : {{ ticket.type }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Projet : {{ ticket.project }}</h6>
+            <hr>
+            <p class="card-text">{{ ticket.content }}</p>
+        </div>
+    </div>
 {% endblock %}

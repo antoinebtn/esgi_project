@@ -15,7 +15,11 @@ class TicketController extends AbstractController
     #[Route('/ticket', name: 'app_ticket')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $tickets = $entityManager->getRepository(Ticket::class)->findAll();
+        $tickets = array();
+        $projects = $this->getUser()->getCompany()->getProjects();
+        for ($i = 0; $i < count($projects); $i++) {
+            $tickets = array_merge($tickets, $entityManager->getRepository(Ticket::class)->findBy(['project' => $projects[$i]])) ;
+        }
 
         return $this->render('ticket/index.html.twig', [
             'tickets' => $tickets,
@@ -47,6 +51,8 @@ class TicketController extends AbstractController
     #[Route('/ticket/add', name: 'app_ticket_add')]
     public function add(Request $request,EntityManagerInterface $entityManager): Response
     {
+        $company = $this->getUser()->getCompany();
+
         $ticket = new Ticket();
 
         $form = $this->createForm(TicketType::class,$ticket);

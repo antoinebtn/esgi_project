@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Company;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,11 +30,18 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // do anything else you need here, like send an email
+            $company = new Company();
+            $company->setName($form->get('company')->getData());
+            $company->setSubscription('free');
 
-            return $this->redirectToRoute('app_home');
+            $user->setCompany($company);
+
+            $entityManager->persist($company);
+            $entityManager->persist($user);
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register.html.twig', [

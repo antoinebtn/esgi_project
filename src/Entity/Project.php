@@ -21,6 +21,9 @@ class Project
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Ticket::class)]
     private Collection $Tickets;
 
+    #[ORM\ManyToOne(inversedBy: 'projects')]
+    private ?Company $company = null;
+
     public function __construct()
     {
         $this->Tickets = new ArrayCollection();
@@ -74,6 +77,18 @@ class Project
                 $ticket->setProject(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): static
+    {
+        $this->company = $company;
 
         return $this;
     }

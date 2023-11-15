@@ -2,7 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Project;
 use App\Entity\Ticket;
+use App\Repository\ProjectRepository;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,6 +21,7 @@ class TicketType extends AbstractType
             ->add('content')
             ->add('project')
             ->add('type')
+            ->add('status')
             ->add('Nouveau', SubmitType::class)
         ;
     }
@@ -24,7 +29,7 @@ class TicketType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Ticket::class,
+            'data_class' => Ticket::class
         ]);
     }
 }
