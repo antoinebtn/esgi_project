@@ -29,6 +29,9 @@ class Ticket
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     private ?User $assignment = null;
 
+    #[ORM\ManyToOne(inversedBy: 'Tickets')]
+    private ?Project $project = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +93,18 @@ class Ticket
     public function setAssignment(?User $assignment): static
     {
         $this->assignment = $assignment;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
 
         return $this;
     }

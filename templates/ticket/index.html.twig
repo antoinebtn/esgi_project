@@ -8,8 +8,10 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Titre</th>
+            <th scope="col">Contenu</th>
             <th scope="col">Affectation</th>
             <th scope="col">Type</th>
+            <th scope="col">Projet</th>
             <th scope="col">Statut</th>
         </tr>
         </thead>
@@ -17,9 +19,11 @@
         {% for ticket in tickets %}
         <tr>
             <th scope="row">{{ ticket.id }}</th>
-            <td>{{ ticket.title }}</td>
+            <th scope="row"><a href="{{ path('app_show_ticket',{id: ticket.id}) }}">{{ ticket.title }}</a></th>
+            <td>{{ ticket.content|striptags|slice(0, 15) }}</td>
             <td>{{ ticket.assignment }}</td>
             <td>A faire</td>
+            <td>{{ ticket.project }}</td>
             <td>A faire</td>
         </tr>
         {% endfor %}

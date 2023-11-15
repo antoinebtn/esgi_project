@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ESGI Project - Ticket n°{{ ticket.id }}{% endblock %}
+
+{% block body %}
+<h1>{{ ticket.title }}</h1>
+<p>{{ ticket.content }}</p>
+{% endblock %}
