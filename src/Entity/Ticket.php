@@ -32,6 +32,12 @@ class Ticket
     #[ORM\ManyToOne(inversedBy: 'Tickets')]
     private ?Project $project = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tickets')]
+    private ?TicketType $type = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tickets')]
+    private ?Status $status = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +111,30 @@ class Ticket
     public function setProject(?Project $project): static
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    public function getType(): ?TicketType
+    {
+        return $this->type;
+    }
+
+    public function setType(?TicketType $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?Status $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

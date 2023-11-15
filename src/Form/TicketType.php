@@ -16,6 +16,7 @@ class TicketType extends AbstractType
             ->add('title')
             ->add('content')
             ->add('project')
+            ->add('type')
             ->add('Nouveau', SubmitType::class)
         ;
     }

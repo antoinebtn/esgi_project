@@ -34,6 +34,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'assignment', targetEntity: Ticket::class)]
     private Collection $tickets;
 
+    #[ORM\Column(length: 255)]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lastname = null;
+
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
@@ -41,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(): string
     {
-        return $this->getEmail();
+        return $this->getFirstname() . ' ' . $this->getLastname();
     }
 
     public function getId(): ?int
@@ -140,6 +146,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $ticket->setAssignment(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): static
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): static
+    {
+        $this->lastname = $lastname;
 
         return $this;
     }
