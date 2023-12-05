@@ -3,20 +3,25 @@
 {% block title %}Hello ProjectController!{% endblock %}
 
 {% block body %}
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nom du projet</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for project in projects %}
+    {% if projects | length > 0 %}
+        <table class="table">
+            <thead>
             <tr>
-                <th scope="row">{{ project.id }}</th>
-                <td><a href="{{ path('app_show_project',{id: project.id}) }}">{{ project.name }}</a></td>
+                <th scope="col">#</th>
+                <th scope="col">Nom du projet</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for project in projects %}
+                <tr>
+                    <th scope="row">{{ project.id }}</th>
+                    <td><a href="{{ path('app_show_project',{id: project.id}) }}">{{ project.name }}</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h5 class="mt-4">Vous n'avez aucun projet pour le moment :</h5>
+    {% endif %}
+        <a class="btn btn-primary mt-2" href="{{ path('app_project_add') }}">Créer un projet</a>
 {% endblock %}

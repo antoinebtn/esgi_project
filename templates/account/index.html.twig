@@ -5,6 +5,14 @@
 {% block body %}
     <h1 class="mt-4">Mon compte</h1>
     <hr>
+    <h5>
+        {% if is_granted('ROLE_ADMIN') %}
+            Rôle utilisateur : ADMIN
+        {% else %}
+            Rôle utilisateur : USER
+        {% endif %}
+    </h5>
+    <hr>
     - <a href="{{ path('app_account_password') }}">Modifier mon mot de passe</a>
     <br>
     - <a href="{{ path('app_company') }}">Mon entreprise</a>

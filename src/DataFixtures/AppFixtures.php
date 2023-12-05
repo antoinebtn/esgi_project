@@ -76,7 +76,6 @@ class AppFixtures extends Fixture
             $statusObject = new Status();
             $statusObject->setName($status);
             $manager->persist($statusObject);
-
         }
 
         $this->setReference(self::STATUS_REFERENCE, $statusObject);
