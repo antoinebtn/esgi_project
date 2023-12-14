@@ -5,14 +5,41 @@
 {% block body %}
     <h1>{{ company.name }}</h1>
     <hr>
-    <h3>Abonnement : <strong>{{ company.subscription }}</strong></h3>
-    <p><a href="{{ path('app_pricing') }}">Modifier mon Abonnement</a></p>
+    <h3>Abonnement : <strong>{{ company.subscription.name }}</strong></h3>
+    <a class="btn btn-primary mt-2 w-25" href="{{ path('app_pricing') }}">Modifier mon Abonnement</a>
     <hr>
-    <h2>Projets :</h2>
-    <ul>
-        {% for project in projects %}
-            <li><a href="{{ path('app_show_project',{id: project.id}) }}"></a>{{ project.name }}</li>
-        {% endfor %}
-    </ul>
+
+    <div class="row">
+        <div class="col-6">
+            <h2>Projet(s) :</h2>
+            <p>Nombre de projets maximum : {{ company.subscription.maxProjects }}</p>
+            {% if projectMessage | length > 0  %}
+                {{ projectMessage }}
+            {% else %}
+                <a class="btn btn-primary mt-2 w-50" href="{{ path('app_project_add') }}">Créer un projet</a>
+            {% endif %}
+            <ul class="mt-4">
+                {% for project in projects %}
+                    <li><a href="{{ path('app_show_project',{id: project.id}) }}">{{ project.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-6">
+            <h2>Utilisateur(s) :</h2>
+            <p>Nombre d'utilisateurs maximum : {{ company.subscription.maxUsers }}</p>
+            {% if userMessage | length > 0  %}
+                {{ userMessage }}
+            {% else %}
+                <a class="btn btn-primary mt-2 w-50" href="{{ path('app_company_new_user') }}">Créer un Utilisateur</a>
+            {% endif %}
+            <ul class="mt-4">
+                {% for user in users %}
+                    <li>
+                        <p>{{ user.firstname }} {{ user.lastname }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
 {% endblock %}

@@ -15,11 +15,21 @@ class ProjectController extends AbstractController
     #[Route('/project', name: 'app_project')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $companyId = $this->getUser()->getCompany()->getId();
-        $projects = $entityManager->getRepository(Project::class)->findBy(['company' => $companyId]);
+        $company = $this->getUser()->getCompany();
+        $projects = $entityManager->getRepository(Project::class)->findBy(['company' => $company->getId()]);
+
+        if (count($projects) >= $company->getSubscription()->getMaxProjects()){
+            $message = 'Vous avez atteint le nombre max de projet autorisé';
+
+            return $this->render('project/index.html.twig', [
+                'projects' => $projects,
+                'message' => $message
+            ]);
+        }
 
         return $this->render('project/index.html.twig', [
             'projects' => $projects,
+            'message' => ''
         ]);
     }
 
@@ -43,6 +53,10 @@ class ProjectController extends AbstractController
     public function add(Request $request,EntityManagerInterface $entityManager): Response
     {
         $company = $this->getUser()->getCompany();
+        $subscription = $company->getSubscription();
+
+        $projects= $entityManager->getRepository(Project::class)->findAll();
+
 
         $project = new Project();
 

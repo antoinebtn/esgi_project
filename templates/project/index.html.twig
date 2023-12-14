@@ -3,6 +3,7 @@
 {% block title %}Hello ProjectController!{% endblock %}
 
 {% block body %}
+
     {% if projects | length > 0 %}
         <table class="table">
             <thead>
@@ -23,5 +24,9 @@
     {% else %}
         <h5 class="mt-4">Vous n'avez aucun projet pour le moment :</h5>
     {% endif %}
+    {% if message | length > 0  %}
+        {{ message }}
+    {% else %}
         <a class="btn btn-primary mt-2" href="{{ path('app_project_add') }}">Créer un projet</a>
+    {% endif %}
 {% endblock %}

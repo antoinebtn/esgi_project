@@ -21,7 +21,7 @@ class RegistrationFormType extends AbstractType
             ->add('email')
             ->add('firstname')
             ->add('lastname')
-            ->add('company', TextType::class, ['mapped' => false])
+
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -45,12 +45,16 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
         ;
+        if ($options['needCompany'] === true){
+            $builder->add('company', TextType::class, ['mapped' => false]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'needCompany' => true
         ]);
     }
 }

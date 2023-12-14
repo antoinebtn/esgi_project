@@ -35,6 +35,11 @@ class AppFixtures extends Fixture
         $subscriptionPrices = [2999, 1499,0];
         $subscriptionMaxUsers = [100, 10, 1];
         $subscriptionMaxProjects = [100, 3, 1];
+        $subscriptionStripePriceId = [
+            'price_1OMsaQJNd8Md8wujoIt8Ewfr',
+            'price_1OMsZlJNd8Md8wujJPHGCi4z',
+            ''
+        ];
 
         for ($i = 0; $i < 3; $i++) {
             $subscription = new Subscription();
@@ -42,6 +47,7 @@ class AppFixtures extends Fixture
             $subscription->setPrice($subscriptionPrices[$i]);
             $subscription->setMaxUsers($subscriptionMaxUsers[$i]);
             $subscription->setMaxProjects($subscriptionMaxProjects[$i]);
+            $subscription->setStripeSubscriptionId($subscriptionStripePriceId[$i]);
             $manager->persist($subscription);
             $this->setReference(self::SUBSCRIPTION_REFERENCE, $subscription);
         }
@@ -67,12 +73,12 @@ class AppFixtures extends Fixture
 
 
         // Projects Fixture
-        for ($i = 0; $i < 5; $i++) {
-            $project = new Project();
-            $project->setName("Projet n°" . $i);
-            $project->setCompany($this->getReference(AppFixtures::COMPANY_REFERENCE));
-            $manager->persist($project);
-        }
+
+        $project = new Project();
+        $project->setName("Projet n°" . $i);
+        $project->setCompany($this->getReference(AppFixtures::COMPANY_REFERENCE));
+        $manager->persist($project);
+
 
         $this->setReference(self::PROJECT_REFERENCE, $project);
 
