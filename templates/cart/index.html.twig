@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier - ESGI Project{% endblock %}
+
+{% block body %}
+    <div class="mt-4">
+        <hr>
+        <h4>Récapitulatif de votre commande</h4>
+        <h5>Type d'abonnement: {{ subscription.name }}</h5>
+        <br>
+        <p>Nombre maximum d'utilisateurs pour votre entreprise: {{ subscription.maxUsers }}</p>
+        <p>Nombre maximum de projets pour votre entreprise: {{ subscription.maxProjects }}</p>
+        <p>Prix: {{ subscription.price / 100}}€/Mois</p>
+        <a href="{{ path('app_checkout') }}" class="btn btn-info">Valider mon panier</a>
+    </div>
+
+{% endblock %}

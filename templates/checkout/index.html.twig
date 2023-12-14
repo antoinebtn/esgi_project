@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement - ESGI Project{% endblock %}
+
+{% block scripts %}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{{ asset('JS/checkout.js') }}" defer></script>
+{% endblock %}
+
+{% block body %}
+    <h1 class="mt-4">Récapitulatif</h1>
+    <hr>
+    <div class="row">
+        <div class="col-5 bg-body-secondary me-2 h-50">
+            <h2>Utilisateur :</h2>
+            <p><strong>Votre adresse mail:</strong> {{ app.user.email }}</p>
+            <p><strong>Votre entreprise:</strong> {{ app.user.company }}</p>
+            <hr>
+            <h2>Abonnement :</h2>
+            <p><strong>Type d'abonnement:</strong> {{ subscription.name }}</p>
+            <p><strong>Prix de l'abonnement:</strong> {{ subscription.price / 100 }}€</p>
+        </div>
+        <div class="col-5">
+            <div id="checkout" data-stripe-client-secret="{{ clientSecret.client_secret }}">
+        </div>
+    </div>
+    <hr>
+    </div>
+
+
+{% endblock %}
