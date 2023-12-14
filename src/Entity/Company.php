@@ -18,14 +18,14 @@ class Company
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $subscription = null;
-
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class)]
     private Collection $users;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Project::class)]
     private Collection $projects;
+
+    #[ORM\ManyToOne(inversedBy: 'company')]
+    private ?Subscription $subscription = null;
 
     public function __construct()
     {
@@ -51,18 +51,6 @@ class Company
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getSubscription(): ?string
-    {
-        return $this->subscription;
-    }
-
-    public function setSubscription(string $subscription): static
-    {
-        $this->subscription = $subscription;
 
         return $this;
     }
@@ -123,6 +111,18 @@ class Company
                 $project->setCompany(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(?Subscription $subscription): static
+    {
+        $this->subscription = $subscription;
 
         return $this;
     }

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement - ESGI Project{% endblock %}
+
+{% block body %}
+    <h1 class="mt-4">Paiement réussi</h1>
+    <hr>
+    <p>Félicitation, vous venez de souscrire à l'abonnement <strong>{{ subscription.name }}</strong></p>
+    <p>Vous serez facturé {{ subscription.price / 100 }}€ chaque mois.</p>
+    <hr>
+    {{ clientSecret }}
+{% endblock %}

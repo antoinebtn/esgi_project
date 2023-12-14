@@ -4,58 +4,26 @@
 
 {% block body %}
     <div class="d-flex row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-around">
-        {% if not app.user %}
-        <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm">
-                <div class="card-header py-3">
-                    <h4 class="my-0 fw-normal">Gratuit</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">0€<small class="text-muted fw-light">/mois</small></h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>1 Utilisateur</li>
-                        <li>1 Projet</li>
-                        <li>Gestion de ticket</li>
-                        <li>Email Support</li>
-                    </ul>
-                    <a href="{{ path('app_register') }}" class="w-100 btn btn-lg btn-outline-primary">Inscription Gratuite</a>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-        <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm">
-                <div class="card-header py-3">
-                    <h4 class="my-0 fw-normal">Pro</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">15€<small class="text-muted fw-light">/mois</small></h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>10 utilisateurs</li>
-                        <li>3 Projets</li>
-                        <li>Gestion de ticket et de projet</li>
-                        <li>Email Support</li>
-                    </ul>
-                    <button type="button" class="w-100 btn btn-lg btn-primary">Choisir</button>
+        {% for subscription in subscriptions  %}
+            <div class="col">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">{{ subscription.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">{{ subscription.price / 100 }}€<small class="text-muted fw-light">/mois</small></h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>{{ subscription.maxUsers }} utilisateurs</li>
+                            <li>{{ subscription.maxProjects}} Projets</li>
+                            <li>Gestion de ticket et de projet</li>
+                            <li>Email Support</li>
+                        </ul>
+                        <a href="{{ path('app_cart',{id: subscription.id}) }}">
+                            <button type="button" class="w-100 btn btn-lg btn-primary">Choisir</button>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                <div class="card-header py-3 text-white bg-primary border-primary">
-                    <h4 class="my-0 fw-normal">Entreprise</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">29€<small class="text-muted fw-light">/mois</small></h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>500 utilisateurs</li>
-                        <li>Projets illimités</li>
-                        <li>Gestion de ticket et de projet</li>
-                        <li>Email/Phone Support</li>
-                    </ul>
-                    <button type="button" class="w-100 btn btn-lg btn-primary">Choisir</button>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 {% endblock %}

@@ -27,7 +27,7 @@ class TicketController extends AbstractController
     }
 
     #[Route('/ticket/my', name: 'app_my_ticket')]
-    public function getOne(EntityManagerInterface $entityManager): Response
+    public function getMy(EntityManagerInterface $entityManager): Response
     {
         if($this->getUser()){
             $tickets = $entityManager->getRepository(Ticket::class)->findBy(['assignment'=> $this->getUser()]);

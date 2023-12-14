@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Company;
 use App\Entity\Project;
 use App\Entity\Status;
+use App\Entity\Subscription;
 use App\Entity\Ticket;
 use App\Entity\TicketType;
 use App\Entity\User;
@@ -21,6 +22,7 @@ class AppFixtures extends Fixture
     {
         $this->hasher = $hasher;
     }
+    public const SUBSCRIPTION_REFERENCE = 'subscription';
     public const COMPANY_REFERENCE = 'project';
     public const PROJECT_REFERENCE = 'project';
     public const USER_REFERENCE = 'user';
@@ -28,9 +30,25 @@ class AppFixtures extends Fixture
     public const STATUS_REFERENCE = 'status';
     public function load(ObjectManager $manager): void
     {
+        // Subscription Fixture
+        $subscriptionNames = ['Entreprise', 'Pro', 'Free'];
+        $subscriptionPrices = [2999, 1499,0];
+        $subscriptionMaxUsers = [100, 10, 1];
+        $subscriptionMaxProjects = [100, 3, 1];
+
+        for ($i = 0; $i < 3; $i++) {
+            $subscription = new Subscription();
+            $subscription->setName($subscriptionNames[$i]);
+            $subscription->setPrice($subscriptionPrices[$i]);
+            $subscription->setMaxUsers($subscriptionMaxUsers[$i]);
+            $subscription->setMaxProjects($subscriptionMaxProjects[$i]);
+            $manager->persist($subscription);
+            $this->setReference(self::SUBSCRIPTION_REFERENCE, $subscription);
+        }
+
         // Company Fixture
         $company = new Company();
-        $company->setSubscription('free');
+        $company->setSubscription($this->getReference(AppFixtures::SUBSCRIPTION_REFERENCE));
         $company->setName('ESGI Project');
         $manager->persist($company);
         $this->setReference(self::COMPANY_REFERENCE, $company);
