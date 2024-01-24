@@ -43,9 +43,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Company $company = null;
 
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'users')]
+    private Collection $projects;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
+        $this->projects = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -185,6 +193,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCompany(?Company $company): static
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): static
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+            $project->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): static
+    {
+        if ($this->projects->removeElement($project)) {
+            $project->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
 
         return $this;
     }

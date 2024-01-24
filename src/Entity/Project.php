@@ -24,9 +24,16 @@ class Project
     #[ORM\ManyToOne(inversedBy: 'projects')]
     private ?Company $company = null;
 
+    #[ORM\Column]
+    private ?bool $isPublic = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'projects')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->Tickets = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -89,6 +96,42 @@ class Project
     public function setCompany(?Company $company): static
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    public function isIsPublic(): ?bool
+    {
+        return $this->isPublic;
+    }
+
+    public function setIsPublic(bool $isPublic): static
+    {
+        $this->isPublic = $isPublic;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        $this->users->removeElement($user);
 
         return $this;
     }

@@ -3,14 +3,36 @@
 {% block title %}ESGI Project - Ticket n°{{ ticket.id }}{% endblock %}
 
 {% block body %}
-    <div class="card" >
-        <div class="card-body">
-            <h5 class="card-title">{{ ticket.title }}</h5>
-            <hr>
-            <h6 class="card-subtitle mb-2 text-muted">Statut : {{ ticket.status }} | Type : {{ ticket.type }}</h6>
-            <h6 class="card-subtitle mb-2 text-muted">Projet : {{ ticket.project }}</h6>
-            <hr>
-            <p class="card-text">{{ ticket.content }}</p>
+    <div class="row">
+        <div class="col-xl-8">
+            <div class="card" >
+                <div class="card-body">
+                    <h5 class="card-title">{{ ticket.title }}</h5>
+                    <h6>Créé le {{ ticket.createdAt | date("d/m/Y G:i:s") }}</h6>
+                    <hr>
+                    <h6 class="card-subtitle mb-2 text-muted">Statut : {{ ticket.status }} | Type : {{ ticket.type }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Projet : {{ ticket.project }}</h6>
+                    <hr>
+                    <p class="card-text">{{ ticket.content }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2">
+            <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
+                {{ form(form) }}
+                <div class="list-group list-group-flush border-bottom scrollarea">
+                    {% for comment in comments %}
+                        <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
+                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                <strong class="mb-1">{{ comment.user.firstname }} {{ comment.user.lastname }}</strong>
+                                <small>{{ comment.createdAt | date("d/m/Y G:i:s") }}</small>
+                            </div>
+                            <div class="col-10 mb-1 small">{{ comment.content }}</div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
+
 {% endblock %}

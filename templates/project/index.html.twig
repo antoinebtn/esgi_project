@@ -10,6 +10,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nom du projet</th>
+                <th scope="col">Visibilité</th>
             </tr>
             </thead>
             <tbody>
@@ -17,6 +18,13 @@
                 <tr>
                     <th scope="row">{{ project.id }}</th>
                     <td><a href="{{ path('app_show_project',{id: project.id}) }}">{{ project.name }}</a></td>
+                    <td>
+                        {% if project.isPublic %}
+                            <p>Public</p>
+                        {% else %}
+                            <p>Privé</p>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

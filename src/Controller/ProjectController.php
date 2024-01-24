@@ -16,6 +16,7 @@ class ProjectController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $company = $this->getUser()->getCompany();
+
         $projects = $entityManager->getRepository(Project::class)->findBy(['company' => $company->getId()]);
 
         if (count($projects) >= $company->getSubscription()->getMaxProjects()){
@@ -53,10 +54,6 @@ class ProjectController extends AbstractController
     public function add(Request $request,EntityManagerInterface $entityManager): Response
     {
         $company = $this->getUser()->getCompany();
-        $subscription = $company->getSubscription();
-
-        $projects= $entityManager->getRepository(Project::class)->findAll();
-
 
         $project = new Project();
 
@@ -66,6 +63,7 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $project = $form->getData();
             $project->setCompany($company);
+            $project->addUser($this->getUser());
 
             $entityManager->persist($project);
             $entityManager->flush();

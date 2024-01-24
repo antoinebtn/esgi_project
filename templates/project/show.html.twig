@@ -5,7 +5,17 @@
 {% block body %}
     <div class="card" >
         <div class="card-body">
-            <h5 class="card-title">{{ project.name }}</h5>
+            <h3 class="card-title">{{ project.name }}</h3>
+            <hr>
+            <h4>Visibilité :
+                {% if project.isPublic %}
+                    <em>Public</em>
+                {% else %}
+                    <em>Privé</em>
+                {% endif %}
+            </h4>
+            <hr>
+            <h4>Liste des tickets :</h4>
             <hr>
             <table class="table">
                 <thead>

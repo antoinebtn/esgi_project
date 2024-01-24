@@ -75,7 +75,8 @@ class AppFixtures extends Fixture
         // Projects Fixture
 
         $project = new Project();
-        $project->setName("Projet n°" . $i);
+        $project->setName("Projet n°1");
+        $project->setIsPublic(true);
         $project->setCompany($this->getReference(AppFixtures::COMPANY_REFERENCE));
         $manager->persist($project);
 

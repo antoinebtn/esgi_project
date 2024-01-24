@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Ticket;
+use App\Form\CommentType;
 use App\Form\TicketType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,12 +42,31 @@ class TicketController extends AbstractController
     }
 
     #[Route('/ticket/{id}', name: 'app_show_ticket', requirements: ['id' => '\d+'])]
-    public function show(int $id,EntityManagerInterface $entityManager): Response
+    public function show(int $id,EntityManagerInterface $entityManager, Request $request): Response
     {
         $ticket = $entityManager->getRepository(Ticket::class)->findOneBy(['id'=> $id]);
+        $comments = $entityManager->getRepository(Comment::class)->findBy(['ticket' => $ticket]);
+
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment = $form->getData();
+            $comment->setCreatedAt(new \DateTimeImmutable());
+            $comment->setUser($this->getUser());
+            $comment->setTicket($ticket);
+
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_show_ticket', ['id' => $id]);
+        }
 
         return $this->render('ticket/show.html.twig', [
             'ticket' => $ticket,
+            'form' => $form,
+            'comments' => $comments
         ]);
     }
     #[Route('/ticket/add', name: 'app_ticket_add')]
