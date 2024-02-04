@@ -15,6 +15,13 @@
                 {% endif %}
             </h4>
             <hr>
+            <h4>Statuts des tickets de ce projet</h4>
+            <p>Nombre de ticket en rédaction: {{ project.getNumberOfTicketsIn('draft') }}</p>
+            <p>Nombre de ticket en cours: {{ project.getNumberOfTicketsIn('in_progress') }}</p>
+            <p>Nombre de ticket en relecture: {{ project.getNumberOfTicketsIn('reviewed') }}</p>
+            <p>Nombre de ticket en approuvé: {{ project.getNumberOfTicketsIn('approved') }}</p>
+            <p>Nombre de ticket en rejeté: {{ project.getNumberOfTicketsIn('rejected') }}</p>
+            <hr>
             <h4>Liste des tickets :</h4>
             <hr>
             <table class="table">
@@ -24,7 +31,6 @@
                     <th scope="col">Titre</th>
                     <th scope="col">Affectation</th>
                     <th scope="col">Type</th>
-                    <th scope="col">Statut</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,7 +46,6 @@
                                 <div class="btn btn-info btn-sm w-75">{{ ticket.type }}</div>
                             {% endif %}
                         </td>
-                        <td>{{ ticket.status }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -9,9 +9,9 @@
             <th scope="col">#</th>
             <th scope="col">Titre</th>
             <th scope="col">Affectation</th>
+            <th scope="col">Statut</th>
             <th scope="col">Type</th>
             <th scope="col">Projet</th>
-            <th scope="col">Statut</th>
         </tr>
         </thead>
         <tbody>
@@ -20,6 +20,7 @@
             <th scope="row">{{ ticket.id }}</th>
             <th scope="row"><a href="{{ path('app_show_ticket',{id: ticket.id}) }}">{{ ticket.title }}</a></th>
             <td>{{ ticket.assignment }}</td>
+            <td>{{ ticket.currentState }}</td>
             <td>
                 {% if ticket.type == "Bug" %}
                     <div class="btn btn-danger btn-sm w-75">{{ ticket.type }}</div>
@@ -28,7 +29,6 @@
                 {% endif %}
             </td>
             <td>{{ ticket.project }}</td>
-            <td>{{ ticket.status }}</td>
         </tr>
         {% endfor %}
         </tbody>

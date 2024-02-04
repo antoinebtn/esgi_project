@@ -1,0 +1,35 @@
+# config/packages/workflow.yaml
+framework:
+  workflows:
+    ticket_workflow:
+      type: 'state_machine'
+      audit_trail:
+        enabled: true
+      marking_store:
+        type: 'method'
+        property: 'currentState'
+      supports:
+        - App\Entity\Ticket
+      initial_marking: draft
+      places:
+        - draft
+        - in_progress
+        - reviewed
+        - approved
+        - rejected
+      transitions:
+        to_be_written:
+          from: rejected
+          to: draft
+        to_do:
+          from: draft
+          to:   in_progress
+        to_review:
+          from: in_progress
+          to: reviewed
+        approve:
+          from: reviewed
+          to:   approved
+        reject:
+          from: reviewed
+          to:   rejected

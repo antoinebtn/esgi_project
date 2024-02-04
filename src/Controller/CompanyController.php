@@ -59,6 +59,11 @@ class CompanyController extends AbstractController
             );
 
             $user->setCompany($company);
+
+            $roles = $user->getRoles();
+            $roles[] = 'ROLE_USER';
+            $user->setRoles($roles);
+
             $entityManager->persist($user);
             $entityManager->flush();
             return $this->redirectToRoute('app_company');

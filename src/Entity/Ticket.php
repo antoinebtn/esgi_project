@@ -39,11 +39,14 @@ class Ticket
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     private ?TicketType $type = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tickets')]
-    private ?Status $status = null;
-
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: Comment::class)]
     private Collection $comments;
+
+    #[ORM\Column(length: 255)]
+    private string $currentState = 'draft';
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $endDate = null;
 
     public function __construct()
     {
@@ -139,18 +142,6 @@ class Ticket
         return $this;
     }
 
-    public function getStatus(): ?Status
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?Status $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Comment>
      */
@@ -179,5 +170,33 @@ class Ticket
         }
 
         return $this;
+    }
+
+    public function getEndDate(): ?\DateTimeInterface
+    {
+        return $this->endDate;
+    }
+
+    public function setEndDate(?\DateTimeInterface $endDate): static
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentState(): string
+    {
+        return $this->currentState;
+    }
+
+    /**
+     * @param string $currentState
+     */
+    public function setCurrentState(string $currentState): void
+    {
+        $this->currentState = $currentState;
     }
 }

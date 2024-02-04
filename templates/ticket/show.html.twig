@@ -4,20 +4,68 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-xl-8">
+        <div class="col-10">
+            <div class="row mb-3">
+                <div class="col-4">
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path('app_ticket') }}">
+                        Voir tous les tickets
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path('app_show_project',{id: ticket.project.id}) }}">
+                        Voir le projet associé
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path('app_my_ticket') }}">
+                        Retour à mes tickets
+                    </a>
+                </div>
+            </div>
             <div class="card" >
                 <div class="card-body">
-                    <h5 class="card-title">{{ ticket.title }}</h5>
-                    <h6>Créé le {{ ticket.createdAt | date("d/m/Y G:i:s") }}</h6>
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">{{ ticket.title }}</h5>
+                        <a href="{{ path('app_edit_ticket',{id: ticket.id}) }}" class="btn btn-sm btn-secondary">Editer</a>
+                    </div>
                     <hr>
-                    <h6 class="card-subtitle mb-2 text-muted">Statut : {{ ticket.status }} | Type : {{ ticket.type }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Type : {{ ticket.type }}</h6>
                     <h6 class="card-subtitle mb-2 text-muted">Projet : {{ ticket.project }}</h6>
                     <hr>
-                    <p class="card-text">{{ ticket.content }}</p>
+                    <h6 class="card-subtitle mb-2 text-muted">Date de création : {{ ticket.createdAt | date("d F Y G:i") }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Dernière modification : {{ ticket.updatedAt | date("d F Y G:i") }}</h6>
+                    {% if ticket.endDate %}
+                        <h6 class="card-subtitle mb-2 text-muted">Date de fin : {{ ticket.endDate | date("d/m/Y G:i:s") }}</h6>
+                    {% endif %}
+                    <hr>
+                    <div class="row">
+                        <div class="d-flex col-3 align-items-center">
+                            <h6>Statut : {{ticket.currentState}}</h6>
+                        </div>
+                        <div class="col">
+                            {% if workflow_can(ticket, 'to_do') %}
+                                <button class="btn btn-sm btn-success" onclick="changerEtat('{{ path('app_ticket_transition') }}', 'to_do')">A Faire</button>
+                            {% endif %}
+                            {% if workflow_can(ticket, 'to_review') %}
+                                <button class="btn btn-sm btn-success" onclick="changerEtat('{{ path('app_ticket_transition') }}', 'to_review')">A Vérifier</button>
+                            {% endif %}
+                            {% if workflow_can(ticket, 'reject') %}
+                                <button class="btn btn-sm btn-danger" onclick="changerEtat('{{ path('app_ticket_transition') }}', 'reject')">Rejeter</button>
+                            {% endif %}
+                            {% if workflow_can(ticket, 'approve') %}
+                                <button class="btn btn-sm btn-success" onclick="changerEtat('{{ path('app_ticket_transition') }}', 'approve')">Approuver</button>
+                            {% endif %}
+                            {% if workflow_can(ticket, 'to_be_written') %}
+                                <button class="btn btn-sm btn-secondary" onclick="changerEtat('{{ path('app_ticket_transition') }}', 'to_be_written')">A rédiger</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr>
+                    <p class="card-text">{{ ticket.content | raw }}</p>
                 </div>
             </div>
         </div>
-        <div class="col-xl-2">
+        <div class="col-2">
             <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
                 {{ form(form) }}
                 <div class="list-group list-group-flush border-bottom scrollarea">
@@ -34,5 +82,23 @@
             </div>
         </div>
     </div>
-
+    <script>
+        function changerEtat(url, transition) {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ticketId: {{ ticket.id }},
+                    transition: transition,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    location.reload();
+                });
+        }
+    </script>
 {% endblock %}

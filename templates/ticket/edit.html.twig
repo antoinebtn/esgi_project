@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ESGI Project - Ticket n°{{ ticket.id }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-10">
+            <div class="row mb-3">
+                <div class="col-4">
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path('app_ticket') }}">
+                        Voir tous les tickets
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path('app_show_project',{id: ticket.project.id}) }}">
+                        Voir le projet associé
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path('app_my_ticket') }}">
+                        Retour à mes tickets
+                    </a>
+                </div>
+            </div>
+            {{ form(form) }}
+        </div>
+    </div>
+{% endblock %}

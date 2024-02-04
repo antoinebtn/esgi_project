@@ -4,13 +4,11 @@ namespace App\DataFixtures;
 
 use App\Entity\Company;
 use App\Entity\Project;
-use App\Entity\Status;
 use App\Entity\Subscription;
 use App\Entity\Ticket;
 use App\Entity\TicketType;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -95,16 +93,6 @@ class AppFixtures extends Fixture
 
         $this->setReference(self::TICKET_TYPE_REFERENCE, $type2);
 
-        // Status Fixture
-        $statusTab = ['To be written', 'To do', 'Closed', 'New'];
-        foreach ($statusTab as $status){
-            $statusObject = new Status();
-            $statusObject->setName($status);
-            $manager->persist($statusObject);
-        }
-
-        $this->setReference(self::STATUS_REFERENCE, $statusObject);
-
         // Tickets Fixture
         for ($i = 0; $i < 25; $i++) {
             $ticket = new Ticket();
@@ -115,7 +103,6 @@ class AppFixtures extends Fixture
             $ticket->setProject($this->getReference(AppFixtures::PROJECT_REFERENCE));
             $ticket->setAssignment($this->getReference(AppFixtures::USER_REFERENCE));
             $ticket->setType($this->getReference(AppFixtures::TICKET_TYPE_REFERENCE));
-            $ticket->setStatus($this->getReference(AppFixtures::STATUS_REFERENCE));
             $manager->persist($ticket);
         }
 

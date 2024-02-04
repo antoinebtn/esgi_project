@@ -9,9 +9,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ProjectController extends AbstractController
 {
+    #[IsGranted('ROLE_ADMIN', message: 'You are not allowed to access the projects dashboard.')]
     #[Route('/project', name: 'app_project')]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -39,6 +41,8 @@ class ProjectController extends AbstractController
     {
         $companyId = $this->getUser()->getCompany()->getId();
         $project = $entityManager->getRepository(Project::class)->findOneBy(['id' => $id, 'company' => $companyId]);
+
+
         if ($project) {
             $tickets = $project->getTickets();
             return $this->render('project/show.html.twig', [

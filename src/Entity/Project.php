@@ -135,4 +135,11 @@ class Project
 
         return $this;
     }
+
+    public function getNumberOfTicketsIn(string $state): int
+    {
+        return $this->getTickets()->filter(function (Ticket $ticket) use ($state) {
+            return $ticket->getCurrentState() === $state;
+        })->count();
+    }
 }

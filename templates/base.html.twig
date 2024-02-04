@@ -16,17 +16,19 @@
                 <a href="{{ path('app_home') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                     <span class="fs-4">ESGI Project</span>
                 </a>
-                <ul class="nav nav-pills">
+                <ul class="nav nav-pills ">
                     {% if app.user %}
-                        <li class="nav-item"><a href="{{ path('app_ticket_add') }}" class="nav-link active" aria-current="page">Nouveau ticket</a></li>
-                        <li class="nav-item"><a href="{{ path('app_my_ticket') }}" class="nav-link">Mes Tickets</a></li>
-                        <li class="nav-item"><a href="{{ path('app_account') }}" class="nav-link">Mon Profil</a></li>
-                        <li class="nav-item"><a href="{{ path('app_company') }}" class="nav-link">Mon Entreprise</a></li>
-                        <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link">Déconnexion</a></li>
+                        <li class="nav-item"><a href="{{ path('app_ticket_add') }}" class="nav-link btn btn-sm btn-outline-light" aria-current="page">Nouveau ticket</a></li>
+                        <li class="nav-item"><a href="{{ path('app_my_ticket') }}" class="nav-link btn btn-sm btn-outline-light">Mes Tickets</a></li>
+                        <li class="nav-item"><a href="{{ path('app_account') }}" class="nav-link btn btn-sm btn-outline-light">Mon Profil</a></li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item"><a href="{{ path('app_company') }}" class="nav-link btn btn-sm btn-outline-light">Mon Entreprise</a></li>
+                        {% endif %}
+                        <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link  btn btn-sm btn-outline-danger">Déconnexion</a></li>
                     {% else %}
-                        <li class="nav-item"><a href="{{ path('app_pricing') }}" class="nav-link">Nos Tarifs</a></li>
-                        <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link">Connexion</a></li>
-                        <li class="nav-item"><a href="{{ path('app_register') }}" class="nav-link">Inscription</a></li>
+                        <li class="nav-item"><a href="{{ path('app_pricing') }}" class="nav-link btn btn-sm btn-outline-light">Nos Tarifs</a></li>
+                        <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link btn btn-sm btn-outline-light">Connexion</a></li>
+                        <li class="nav-item"><a href="{{ path('app_register') }}" class="nav-link btn btn-sm btn-outline-light">Inscription</a></li>
                     {% endif %}
 
                 </ul>
@@ -50,12 +52,20 @@
                                 Tous les Tickets
                             </a>
                         </li>
-                        <li>
+                        {% if is_granted('ROLE_ADMIN') %}
                             <a href="{{ path('app_project') }}" class="nav-link link-dark">
                                 <svg class="bi me-2" width="16" height="16"></svg>
                                 Tous les Projets
                             </a>
-                        </li>
+                        {% endif %}
+                        {% if app.user %}
+                            {% for project in app.user.company.projects %}
+                               <a href="{{ path('app_show_project',{id: project.id}) }}" class="nav-link link-dark">
+                                <svg class="bi me-2" width="16" height="16"></svg>
+                                {{ project.name }}
+                            </a>
+                            {% endfor %}
+                        {% endif %}
                     </ul>
                     <hr>
                 </div>
